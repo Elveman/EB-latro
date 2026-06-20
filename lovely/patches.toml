@@ -1,0 +1,29 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+[[patches]]
+[patches.module]
+source = "lib/json.lua"
+name = "buttlatro_json"
+
+[[patches]]
+[patches.module]
+source = "lib/pollnet.lua"
+name = "buttlatro_pollnet"
+
+[[patches]]
+[patches.module]
+source = "lib/buttplug.lua"
+name = "buttlatro_buttplug"
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = "function love.update( dt )"
+position = "after"
+payload = '''
+    if pollButtplugMessages then pollButtplugMessages() end
+'''
+match_indent = true
+times = 1

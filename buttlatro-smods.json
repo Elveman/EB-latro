@@ -1,0 +1,19 @@
+{
+    "id": "Buttlatro-smods",
+    "name": "Buttlatro-smods",
+    "author": ["Elveman"],
+    "description": "Vibrates a Buttplug.io compatible device as your hand is scored in Balatro! Based on original Buttlatro by Fraggenard.",
+    "prefix": "buttlatro-smods",
+    "main_file": "main.lua",
+    "version": "2.0.0",
+    "dependencies": [
+        "Steamodded",
+        "Lovely"
+    ],
+    "conflicts": [],
+    "provides": [],
+    "badge_colour": "FF69B4",
+    "badge_text_colour": "FFFFFF",
+    "display_name": "Buttlatro-smods",
+    "priority": 0
+}
