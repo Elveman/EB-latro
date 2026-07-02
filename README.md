@@ -1,16 +1,19 @@
-# Buttlatro (Steamodded Port)
+# EB-latro (Emotional Backend mod for Balatro)
 
 A [Balatro](https://www.playbalatro.com/) mod that adds
 [Buttplug.io](https://buttplug.io/) support for vibration-based
 [compatible devices](https://iostindex.com/?filter0ButtplugSupport=4).
-While your hand is being scored, the connected device vibrates with
-increasing intensity as each card, joker, and bonus effect triggers.
+The connected device reacts to what's happening in your run: hand scoring,
+a constant ante-scaling background hum, and/or a bump whenever you exceed
+the current blind's chip requirement — each independently configurable and
+blendable together.
 
 This is a port of the original
 [Buttlatro](https://github.com/Fraggenard/Buttlatro) mod (written for
 [Balamod](https://github.com/balamod/balamod)) to the
 [Steamodded](https://github.com/Steamodded/smods) /
-[Lovely](https://github.com/ethangreen-dev/lovely-injector) modding stack.
+[Lovely](https://github.com/ethangreen-dev/lovely-injector) modding stack,
+extended with additional vibration modes and a live status overlay.
 
 ## Supported Platforms
 
@@ -46,8 +49,8 @@ it so that you end up with:
 Mods/
 ├── lovely/
 ├── smods/
-└── Buttlatro-smods/
-    ├── buttlatro-smods.json
+└── EB-latro/
+    ├── eb-latro.json
     ├── main.lua
     ├── config.lua
     ├── lib/
@@ -56,7 +59,7 @@ Mods/
 ```
 
 Do **not** extract the zip's contents directly into `Mods/` — the inner
-folder name `Buttlatro-smods` must be preserved.
+folder name `EB-latro` must be preserved.
 
 ### 3. Set up Intiface Central
 
@@ -72,30 +75,90 @@ prefer the command line) and:
 ### 4. Launch Balatro
 
 Start the game normally. On the main menu, open **Mods** and confirm
-**Buttlatro-smods** is listed and enabled. If Intiface was running on the
+**EB-latro** is listed and enabled. If Intiface was running on the
 default port, the mod will report "Connected to Intiface server" on its
 Config tab on the first launch.
+
+## Vibration Modes
+
+EB-latro can drive vibration from up to three independent sources at the
+same time. Each is toggled/tuned separately, and how they combine when
+more than one is active at once is controlled by **Blend Mode**.
+
+### Scoring Mode (always on)
+
+Tracks your hand being scored: intensity starts at **Start Intensity**
+the moment scoring begins, and increases by **Trigger Increment** for
+every card, joker, and bonus effect that triggers during that hand. This
+is the original Buttlatro behavior and has no on/off switch — it's the
+core of the mod.
+
+### Constant Mode (optional)
+
+A steady background vibration that runs for the whole run (not just while
+a hand is scoring), starting at **Constant Start** and scaling up by
+**Ante Increment** per ante as you progress. It's active only while
+you're actually inside a run — it does not vibrate while you're sitting
+in the main menu, mods screen, or between runs.
+
+### Blind Exceeded (optional, Advanced tab)
+
+Adds an extra bump as soon as your current round score meets or exceeds
+the active blind's chip requirement, and turns back off if your score
+drops below it (e.g. after starting a new blind). Choose the intensity
+from **Off / 20% / 50% / 100%**.
+
+### Blend Mode (Advanced tab)
+
+Controls how multiple simultaneously-active sources above combine into
+one final intensity value:
+
+- **Max** — use whichever active source is currently strongest.
+- **Sum** — add all active sources together (capped at 100%).
+
+### Vibration Level Overlay (Advanced tab)
+
+An optional on-screen readout (e.g. `Vibration: 42%`) shown near the
+blind tags at the top of the screen, reflecting the exact intensity
+currently being sent to your device in real time. Off by default —
+enable it with the **Show Vibration Level Overlay** toggle.
 
 ## Usage
 
 ### In-game
 
-Nothing to configure — vibration tracks your scored hand automatically.
-Intensity starts at whatever the **Start Intensity** slider is set to, and
-grows by the **Trigger Increment** value for every scoring event.
+Nothing to configure to get started — Scoring Mode tracks your scored
+hand automatically. Enable Constant Mode and/or Blind Exceeded from the
+mod's config screen if you want additional feedback layers.
 
-### Config tab (Mods → Buttlatro-smods → Config)
+### Config screen (Mods → EB-latro)
 
-| Slider | Default | Range | Effect |
+The settings are split across two tabs to keep each one short enough to
+fit on screen:
+
+**Config tab**
+
+| Control | Default | Range | Effect |
 |---|---|---|---|
-| Start Intensity (%) | 5 | 0 – 10 | Vibration level at the very beginning of scoring |
+| Start Intensity (%) | 5 | 0 – 50 | Vibration level at the very beginning of scoring |
 | Trigger Increment (%) | 6 | 0 – 10 | Amount added per card / joker / bonus trigger |
+| Enable Constant Vibration | Off | — | Toggles Constant Mode |
+| Constant Start (%) | 10 | 0 – 50 | Constant Mode's base intensity |
+| Ante Increment (%) | 4 | 0 – 20 | Constant Mode's per-ante intensity increase |
 
 Two test buttons (`Start Test Vibration` / `Stop Test Vibration`) are also
 provided so you can confirm your device responds before playing for real.
 
+**Advanced tab**
+
+| Control | Default | Options | Effect |
+|---|---|---|---|
+| Blind Exceeded | Off | Off / 20% / 50% / 100% | Bump intensity once your score clears the blind |
+| Blend Mode | Max | Max / Sum | How multiple active sources combine |
+| Show Vibration Level Overlay | Off | — | Toggles the on-screen intensity readout |
+
 Changes are saved automatically when you leave the Mods menu — stored in
-`Settings/Buttlatro-smods.jkr` next to your other save data.
+`config/EB-latro.jkr` next to your other save data.
 
 ## Troubleshooting
 
@@ -108,10 +171,15 @@ Confirm the test button actually vibrates the device. If it does but
 scoring doesn't, other audio mods may be interfering with the `play_sound`
 wrapper. Open an issue with details.
 
+**Constant Mode keeps vibrating after leaving a run / on the main menu**
+This is a known issue currently being investigated — see the project's
+issue tracker for status.
+
 **Crash on load**
 Make sure Steamodded and Lovely are both installed and up to date. This
-mod relies on `SMODS.current_mod.config`, `create_slider`, and Lovely's
-`patches.module` / `patches.pattern` features — older loaders will error.
+mod relies on `SMODS.current_mod.config`, `create_slider`, `mod.extra_tabs`,
+and Lovely's `patches.module` / `patches.pattern` features — older loaders
+will error.
 
 ## Credits
 

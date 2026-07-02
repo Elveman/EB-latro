@@ -1,0 +1,19 @@
+{
+    "id": "EB-latro",
+    "name": "Emotional Backend mod for Balatro",
+    "author": ["Elveman"],
+    "description": "Adds Buttplug.io support with dynamic vibration modes (scoring, constant, triggers) for Balatro. Based on original Buttlatro by Fraggenard.",
+    "prefix": "eb-latro",
+    "main_file": "main.lua",
+    "version": "3.0.0",
+    "dependencies": [
+        "Steamodded",
+        "Lovely"
+    ],
+    "conflicts": [],
+    "provides": [],
+    "badge_colour": "FF69B4",
+    "badge_text_colour": "FFFFFF",
+    "display_name": "Emotional Backend mod for Balatro",
+    "priority": 0
+}

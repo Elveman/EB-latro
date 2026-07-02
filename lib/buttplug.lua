@@ -23,8 +23,8 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-local json = require("buttlatro_json")
-local pollnet = require("buttlatro_pollnet")
+local json = require("eb_latro_json")
+local pollnet = require("eb_latro_pollnet")
 
 local messages = {
     -- Status messages

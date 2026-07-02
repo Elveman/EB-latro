@@ -5,17 +5,17 @@ priority = 0
 [[patches]]
 [patches.module]
 source = "lib/json.lua"
-name = "buttlatro_json"
+name = "eb_latro_json"
 
 [[patches]]
 [patches.module]
 source = "lib/pollnet.lua"
-name = "buttlatro_pollnet"
+name = "eb_latro_pollnet"
 
 [[patches]]
 [patches.module]
 source = "lib/buttplug.lua"
-name = "buttlatro_buttplug"
+name = "eb_latro_buttplug"
 
 [[patches]]
 [patches.pattern]

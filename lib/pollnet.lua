@@ -71,7 +71,7 @@ local function get_native_lib_path()
     elseif jit.os == "Linux" then
         return mod_path .. "native/linux/libpollnet.so"
     end
-    return nil, "Buttlatro: platform " .. jit.os .. " is not supported (Windows and Linux only)"
+    return nil, "EB-latro: platform " .. jit.os .. " is not supported (Windows and Linux only)"
 end
 
 local lib_path, lib_err = get_native_lib_path()
@@ -81,7 +81,7 @@ end
 
 local load_ok, pollnet = pcall(ffi.load, lib_path)
 if not load_ok then
-    error("Buttlatro: failed to load pollnet from " .. lib_path .. " — " .. tostring(pollnet))
+    error("EB-latro: failed to load pollnet from " .. lib_path .. " — " .. tostring(pollnet))
 end
 local POLLNET_VERSION = ffi.string(pollnet.pollnet_version())
 
